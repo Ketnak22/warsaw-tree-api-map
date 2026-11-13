@@ -40,7 +40,7 @@ export const fetchPagedRecords = async ({ resourceType, district, query, onProgr
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const payload = await response.json();
-    if (payload.success === false) throw new Error(payload.error?.message || "API zwrocilo success=false");
+    if (payload.success === false) throw new Error(payload.error?.message || "API zwróciło success=false");
 
     const records = payload.result?.records || [];
     if (total === null) total = payload.result?.total ?? null;
@@ -58,6 +58,6 @@ export const fetchSinglePage = async (url) => {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
-    if (payload.success === false) throw new Error(payload.error?.message || "API zwrocilo success=false");
+    if (payload.success === false) throw new Error(payload.error?.message || "API zwróciło success=false");
     return payload.result?.records || [];
 };

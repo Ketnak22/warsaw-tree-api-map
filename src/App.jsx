@@ -10,22 +10,22 @@ const VIEW_CONFIG = {
   TREES: {
     label: "Mapa drzew",
     title: "Drzewa w Warszawie",
-    description: "Podglad danych drzew i grup drzew z endpointu",
+    description: "Podgląd danych drzew i grup drzew z endpointu",
     resourceOptions: [
       { value: "TREES", label: "Pojedyncze drzewa" },
       { value: "GROUPS", label: "Grupy drzew" },
     ],
   },
   SHRUBS: {
-    label: "Mapa krzewow",
+    label: "Mapa krzewów",
     title: "Krzewy w Warszawie",
-    description: "Podglad danych krzewow z endpointu",
+    description: "Podgląd danych krzewów z endpointu",
     resourceOptions: [{ value: "SHRUBS", label: "Krzewy" }],
   },
   FORESTS: {
-    label: "Mapa lasow",
+    label: "Mapa lasów",
     title: "Lasy w Warszawie",
-    description: "Podglad wydzielen lesnych z endpointu",
+    description: "Podgląd wydzieleń leśnych z endpointu",
     resourceOptions: [{ value: "FORESTS", label: "Lasy" }],
   },
 };
@@ -125,10 +125,10 @@ function App() {
 
       const normalized = rawRecords.map((record) => normalizeRecord(record, currentResourceType));
       setRecords(normalized);
-      setStatus(`Pobrano ${normalized.length} rekordow.`);
+      setStatus(`Pobrano ${normalized.length} rekordów.`);
     } catch (error) {
       console.error(error);
-      setStatus(`Nie udalo sie pobrac danych: ${error.message}`);
+      setStatus(`Nie udało się pobrać danych: ${error.message}`);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -207,7 +207,7 @@ function App() {
                 <p className="eyebrow">API UM Warszawa</p>
                 <h1>Drzewa w Warszawie</h1>
                 <p className="lead">
-                  Testowy podglad danych z endpointu <code>datastore_search</code>.
+                  Testowy podgląd danych z endpointu <code>datastore_search</code>.
                 </p>
                 <p className="source-link">
                   <a
@@ -215,7 +215,7 @@ function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    ↗ Zobacz dokumentacje zrodlowa API
+                    ↗ Zobacz dokumentację źródłową API
                   </a>
                 </p>
               </>
@@ -232,7 +232,7 @@ function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Otworz endpoint API
+                    Otwórz endpoint API
                   </a>
                 </p>
               </>
@@ -269,7 +269,7 @@ function App() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 type="search"
-                placeholder="np. tawula, zylistek"
+                placeholder="np. tawuła, żylistek"
               />
             </label>
 
@@ -339,11 +339,11 @@ function App() {
                             <br />
                             <strong>Osiedle:</strong> {record.settlement}
                             <br />
-                            <strong>Oddzial:</strong> {record.divisionNo}
+                            <strong>Oddział:</strong> {record.divisionNo}
                             {record.subDivision !== "-" ? ` / ${record.subDivision}` : ""}
                             <br />
                             <hr />
-                            <strong>Gatunek panujacy:</strong> {record.dominantSpecies}
+                            <strong>Gatunek panujący:</strong> {record.dominantSpecies}
                             <br />
                             <strong>Wiek:</strong> {record.ageYears} {record.ageYears !== "-" ? "lat" : ""}
                             <br />
@@ -374,12 +374,12 @@ function App() {
                               </>
                             )}
                             <hr />
-                            <strong>Wysokosc:</strong> {record.height} {record.height !== "-" ? "m" : ""}
+                            <strong>Wysokość:</strong> {record.height} {record.height !== "-" ? "m" : ""}
                             <br />
-                            <strong>Obwod pnia:</strong> {record.circumference}{" "}
+                            <strong>Obwód pnia:</strong> {record.circumference}{" "}
                             {record.circumference !== "-" ? "cm" : ""}
                             <br />
-                            <strong>Srednica korony:</strong> {record.crownDiameter}{" "}
+                            <strong>Średnica korony:</strong> {record.crownDiameter}{" "}
                             {record.crownDiameter !== "-" ? "m" : ""}
                             <br />
                             <strong>Stan:</strong> {record.health}
@@ -401,19 +401,19 @@ function App() {
         <section className="results-panel">
           <div className="results-header">
             <h2>Wyniki</h2>
-            <span>{records.length} rekordow</span>
+            <span>{records.length} rekordów</span>
           </div>
           <div className="table-wrap">
             {activeView === "FORESTS" ? (
               <table>
                 <thead>
                   <tr>
-                    <th>Obwod</th>
+                    <th>Obwód</th>
                     <th>Dzielnica / Osiedle</th>
-                    <th>Oddzial</th>
+                    <th>Oddział</th>
                     <th>Pow. (ha)</th>
                     <th>STL</th>
-                    <th>Gatunek panujacy</th>
+                    <th>Gatunek panujący</th>
                     <th>Wiek (lata)</th>
                     <th>Plan</th>
                     <th>WGS84</th>
@@ -462,7 +462,7 @@ function App() {
                     <th>Gatunek</th>
                     <th>Lokalizacja / Adres</th>
                     <th>Wys. (m)</th>
-                    <th>Obwod (cm)</th>
+                    <th>Obwód (cm)</th>
                     <th>Korona (m)</th>
                     <th>Stan</th>
                     <th>Wiek (dni)</th>
