@@ -53,7 +53,9 @@ In "Bez limitu" mode every record becomes a separate map marker, and the trees r
 
 ## Background: Hydroplan
 
-I built this in May 2026 as a quick prototype for fetching tree data for Hydroplan (https://hydroplan-chi.vercel.app/), an app deployed for Fundacja Alter Eko. I co-developed Hydroplan as part of a team. In November 2026 I cleaned it up for my portfolio (README, deployment, splitting up the main component), but it's still a prototype.
+I built this in May 2026 as a quick prototype for fetching tree data for Hydroplan (https://hydroplan-chi.vercel.app/), an app deployed for Fundacja Alter Eko. I co-developed Hydroplan as part of a team. What I did there, including the production version of the data import, is described in a separate case study: [hydroplan-case-study](https://github.com/Ketnak22/hydroplan-case-study).
+
+In November 2026 I cleaned this prototype up for my portfolio (README, deployment, splitting up the main component), but it's still a prototype.
 
 ## License
 
