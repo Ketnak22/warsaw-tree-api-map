@@ -1,6 +1,8 @@
 {
-  "name": "warsaw-tree-api-test",
+  "name": "warsaw-tree-api-map",
   "version": "0.1.0",
+  "description": "Map and table of trees, shrubs and forests from the City of Warsaw open data API",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
