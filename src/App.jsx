@@ -35,6 +35,7 @@ function App() {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [endpointUrl, setEndpointUrl] = useState("");
+  const [fetchedAt, setFetchedAt] = useState(null);
 
   const currentView = VIEW_CONFIG[activeView];
   // Memoized so the map only refits when new data arrives, not on every keystroke in the form.
@@ -50,6 +51,7 @@ function App() {
     setStatus(`Gotowe do pobrania danych dla widoku: ${currentView.label.toLowerCase()}.`);
     setIsError(false);
     setEndpointUrl("");
+    setFetchedAt(null);
 
     if (activeView !== "TREES") {
       setResourceType(activeView);
@@ -63,6 +65,7 @@ function App() {
     setIsLoading(true);
     setIsError(false);
     setRecords([]);
+    setFetchedAt(null);
 
     const params = {
       resourceType: currentResourceType,
@@ -98,6 +101,7 @@ function App() {
 
       const normalized = rawRecords.map((record) => normalizeRecord(record, currentResourceType));
       setRecords(normalized);
+      setFetchedAt(new Date());
       setStatus(`Pobrano ${normalized.length} rekordów.`);
     } catch (error) {
       console.error(error);
@@ -275,6 +279,14 @@ function App() {
             <strong>{status}</strong>
             <span id="endpoint-preview">{endpointUrl}</span>
           </div>
+
+          <p className="data-source">
+            Źródło danych: Miasto Stołeczne Warszawa,{" "}
+            <a href="http://api.um.warszawa.pl" target="_blank" rel="noopener noreferrer">
+              api.um.warszawa.pl
+            </a>
+            {fetchedAt && `, pobrano: ${fetchedAt.toLocaleString("pl-PL")}`}
+          </p>
         </section>
 
         <section className="map-panel">

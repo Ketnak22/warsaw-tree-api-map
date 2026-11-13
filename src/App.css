@@ -295,6 +295,16 @@ button.secondary:hover {
   overflow-wrap: anywhere;
 }
 
+.data-source {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.data-source a {
+  color: var(--accent);
+}
+
 .map-panel {
   min-height: 420px;
 }
