@@ -25,8 +25,8 @@ These datasets don't have a named licence. The portal allows free use under the 
 
 ## What the app does
 
-- There are three views: trees (single trees or tree groups), shrubs and forests. Forests get their own table columns and popup, since the forest records describe forest subdivisions, not individual plants.
-- You can filter by district. The filter is sent to the API as `filters={"dzielnica": ...}`, so the name has to match exactly, e.g. "Wola".
+- Three views: trees (single trees or tree groups), shrubs and forests. Forests get their own table columns and popup, since the forest records describe forest subdivisions, not individual plants.
+- District filter, sent to the API as `filters={"dzielnica": ...}`, so the name has to match exactly, e.g. "Wola".
 - Text search through the API's `q` parameter, e.g. a species name like "żylistek".
 - A record limit, or a "Bez limitu" mode that fetches every matching record page by page (100,000 per request) and shows progress in the status line.
 - GeoJSON export of the loaded records that have coordinates. Each feature keeps the original API record under `properties.source`.
