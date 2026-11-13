@@ -8,7 +8,7 @@ const RESOURCES = {
 };
 
 // URL musi kończyć się ukośnikiem: bez niego API odpowiada przekierowaniem 301 na http:// i zapytanie w przeglądarce się nie udaje.
-const API_URL ="/api/warsaw/api/action/datastore_search/";
+const API_URL = "https://api.um.warszawa.pl/api/action/datastore_search/";
 
 export const buildApiUrl = ({ resourceType, district, query, limit, offset }) => {
   const params = new URLSearchParams();

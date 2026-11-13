@@ -45,7 +45,7 @@ npm run dev
 
 The dev server runs on http://127.0.0.1:5173.
 
-Requests go through `/api/warsaw`, proxied by Vite locally (`vite.config.js`) and by `vercel.json` on Vercel.
+The browser calls the API directly, since it allows cross-origin requests. I tried a Vercel rewrite as a proxy first, but Vercel couldn't connect to the city's server, so there's no proxy.
 
 ## Limitations
 
