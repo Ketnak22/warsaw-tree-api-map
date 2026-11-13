@@ -39,7 +39,7 @@ function ForestTable({ records }) {
           <EmptyRow colSpan="9" />
         ) : (
           records.map((record, idx) => (
-            <tr key={idx}>
+            <tr key={record.raw._id ?? idx}>
               <td>
                 <div className="species-cell">{record.forestArea}</div>
               </td>
@@ -87,7 +87,7 @@ function PlantTable({ records }) {
           <EmptyRow colSpan="10" />
         ) : (
           records.map((record, idx) => (
-            <tr key={idx}>
+            <tr key={record.raw._id ?? idx}>
               <td>
                 <div className="species-cell">
                   {record.species} {record.outlineId !== "-" ? `(G: ${record.outlineId})` : ""}

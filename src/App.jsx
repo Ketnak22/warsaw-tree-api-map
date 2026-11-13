@@ -289,7 +289,7 @@ function App() {
 
               return (
                 <CircleMarker
-                  key={idx}
+                  key={record.raw._id ?? idx}
                   center={[record.lat, record.lon]}
                   radius={style.radius}
                   color={style.color}
