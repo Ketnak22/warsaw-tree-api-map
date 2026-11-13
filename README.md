@@ -1,12 +1,12 @@
 # Warsaw Tree API Map
 
-> **PL:** Mapa i tabela drzew, krzewów i lasów z otwartego API Urzędu m.st. Warszawy. To prototyp pobierania danych o drzewach, który zrobiłem w maju 2026 na potrzeby Hydroplanu.
+> PL: Mapa i tabela drzew, krzewów i lasów z otwartego API Urzędu m.st. Warszawy. To prototyp pobierania danych o drzewach, który zrobiłem w maju 2026 na potrzeby Hydroplanu.
 
 A React app that pulls tree, shrub and forest data from the City of Warsaw open data API and shows it on a Leaflet map and in a table. You pick a dataset, optionally narrow it down by district or search text, and the app fetches the matching records. The interface is in Polish.
 
 ![Tree groups in Wola on the map](docs/screenshot.png)
 
-Demo: DEMO_URL
+Demo: https://warsaw-tree-api-map.vercel.app/
 
 ## Data
 
@@ -25,8 +25,8 @@ These datasets don't have a named licence. The portal allows free use under the 
 
 ## What the app does
 
-- Three views: trees (single trees or tree groups), shrubs and forests. Forests get their own table columns and popup, since the forest records describe forest subdivisions, not individual plants.
-- District filter. It's sent to the API as `filters={"dzielnica": ...}`, so the name has to match exactly, e.g. "Wola".
+- There are three views: trees (single trees or tree groups), shrubs and forests. Forests get their own table columns and popup, since the forest records describe forest subdivisions, not individual plants.
+- You can filter by district. The filter is sent to the API as `filters={"dzielnica": ...}`, so the name has to match exactly, e.g. "Wola".
 - Text search through the API's `q` parameter, e.g. a species name like "żylistek".
 - A record limit, or a "Bez limitu" mode that fetches every matching record page by page (100,000 per request) and shows progress in the status line.
 - GeoJSON export of the loaded records that have coordinates. Each feature keeps the original API record under `properties.source`.
@@ -53,7 +53,7 @@ In "Bez limitu" mode every record becomes a separate map marker, and the trees r
 
 ## Background: Hydroplan
 
-I built this in May 2026 as a quick prototype for fetching tree data for Hydroplan (https://hydroplan-chi.vercel.app/), an app deployed for Fundacja Alter Eko. I co-developed Hydroplan as part of a team. In November 2026 I cleaned it up for my portfolio (README, deployment, splitting up the main component), but it's still a prototype, not a finished product.
+I built this in May 2026 as a quick prototype for fetching tree data for Hydroplan (https://hydroplan-chi.vercel.app/), an app deployed for Fundacja Alter Eko. I co-developed Hydroplan as part of a team. In November 2026 I cleaned it up for my portfolio (README, deployment, splitting up the main component), but it's still a prototype.
 
 ## License
 
