@@ -4,7 +4,7 @@
 
 A React app that pulls tree, shrub and forest data from the City of Warsaw open data API and shows it on a Leaflet map and in a table. You pick a dataset, optionally narrow it down by district or search text, and the app fetches the matching records. The interface is in Polish.
 
-![Map with tree markers and the results table](docs/screenshot.png)
+![Tree groups in Wola on the map](docs/screenshot.png)
 
 Demo: DEMO_URL
 
