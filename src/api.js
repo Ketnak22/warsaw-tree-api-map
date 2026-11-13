@@ -1,3 +1,5 @@
+import { MAX_RECORDS_PER_REQUEST } from "./config";
+
 const RESOURCES = {
   TREES: "ed6217dd-c8d0-4f7b-8bed-3b7eb81a95ba",
   GROUPS: "913856f7-f71b-4638-abe2-12df14334e1a",
@@ -20,7 +22,7 @@ export const buildApiUrl = ({ resourceType, district, query, limit, offset }) =>
 };
 
 export const fetchPagedRecords = async ({ resourceType, district, query, onProgress }) => {
-  const pageLimit = 100000; // API Warszawy obsługuje bardzo duże limity w jednym żądaniu
+  const pageLimit = MAX_RECORDS_PER_REQUEST;
   let offset = 0;
   let allRecords = [];
   let total = null;

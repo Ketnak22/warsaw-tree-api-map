@@ -3,32 +3,7 @@ import L from "leaflet";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import { buildApiUrl, fetchPagedRecords, fetchSinglePage } from "./api";
 import { normalizeRecord } from "./normalize";
-
-const WARSAW_CENTER = [52.2297, 21.0122];
-
-const VIEW_CONFIG = {
-  TREES: {
-    label: "Mapa drzew",
-    title: "Drzewa w Warszawie",
-    description: "Podgląd danych drzew i grup drzew z endpointu",
-    resourceOptions: [
-      { value: "TREES", label: "Pojedyncze drzewa" },
-      { value: "GROUPS", label: "Grupy drzew" },
-    ],
-  },
-  SHRUBS: {
-    label: "Mapa krzewów",
-    title: "Krzewy w Warszawie",
-    description: "Podgląd danych krzewów z endpointu",
-    resourceOptions: [{ value: "SHRUBS", label: "Krzewy" }],
-  },
-  FORESTS: {
-    label: "Mapa lasów",
-    title: "Lasy w Warszawie",
-    description: "Podgląd wydzieleń leśnych z endpointu",
-    resourceOptions: [{ value: "FORESTS", label: "Lasy" }],
-  },
-};
+import { MARKER_STYLES, MAX_RECORDS_PER_REQUEST, VIEW_CONFIG, WARSAW_CENTER } from "./config";
 
 function MapBoundsSetter({ records }) {
   const map = useMap();
@@ -95,7 +70,7 @@ function App() {
       resourceType: currentResourceType,
       district: district.trim(),
       query: query.trim(),
-      limit: noLimit ? undefined : Math.min(Math.max(limit || 1, 1), 100000),
+      limit: noLimit ? undefined : Math.min(Math.max(limit || 1, 1), MAX_RECORDS_PER_REQUEST),
     };
 
     const previewUrl = buildApiUrl(params);
@@ -114,7 +89,7 @@ function App() {
             setStatus(
               total === null
                 ? `Pobieram dane (offset ${offset})...`
-                : `Pobieram dane (${Math.min(offset + 100000, total)} / ${total})...`
+                : `Pobieram dane (${Math.min(offset + MAX_RECORDS_PER_REQUEST, total)} / ${total})...`
             );
           },
         });
@@ -281,7 +256,7 @@ function App() {
                 onChange={(event) => setLimit(parseInt(event.target.value, 10) || 1)}
                 disabled={noLimit}
                 min="1"
-                max="100000"
+                max={MAX_RECORDS_PER_REQUEST}
               />
             </label>
 
@@ -316,18 +291,16 @@ function App() {
             {records
               .filter((record) => record.lat !== null && record.lon !== null)
               .map((record, idx) => {
-                const isGroup = record.type === "GROUPS";
-                const isShrub = record.type === "SHRUBS";
-                const isForest = record.type === "FORESTS";
+                const style = MARKER_STYLES[record.type];
 
                 return (
                   <CircleMarker
                     key={idx}
                     center={[record.lat, record.lon]}
-                    radius={isGroup ? 10 : isForest ? 7 : isShrub ? 5 : 6}
-                    color={isGroup ? "#2a4d69" : isForest ? "#2f2d1f" : isShrub ? "#7a4f1d" : "#184b34"}
+                    radius={style.radius}
+                    color={style.color}
                     weight={2}
-                    fillColor={isGroup ? "#4b86b4" : isForest ? "#6b7a2b" : isShrub ? "#c8893f" : "#36a46c"}
+                    fillColor={style.fillColor}
                     fillOpacity={0.78}
                   >
                     <Popup>
