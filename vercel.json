@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/warsaw/:path*", "destination": "https://api.um.warszawa.pl/:path*" }
+    { "source": "/api/warsaw/:path(.*)", "destination": "https://api.um.warszawa.pl/:path" }
   ]
 }
