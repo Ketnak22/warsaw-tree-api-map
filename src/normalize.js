@@ -47,7 +47,7 @@ export function normalizeRecord(record, resourceType) {
     raw: record,
     lat: Number.isFinite(lat) ? lat : null,
     lon: Number.isFinite(lon) ? lon : null,
-    species: pick(record, ["gatunek", "gatunek_nazwa", "rodzaj"]),
+    species: pick(record, ["gatunek", "gatunek_nazwa", "rodzaj", "gatunki"]),
     speciesLatin: pick(record, ["gatunek1", "gatunek_1", "nazwa_lacinska"]),
     district: pick(record, ["dzielnica", "district"]),
     address: pick(record, ["adres", "ulica", "miejsce", "adr_es"]),
