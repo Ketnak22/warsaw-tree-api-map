@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import L from "leaflet";
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, useMap } from "react-leaflet";
 import { buildApiUrl, fetchPagedRecords, fetchSinglePage } from "./api";
 import { normalizeRecord } from "./normalize";
+import RecordPopup from "./components/RecordPopup";
+import ResultsTable from "./components/ResultsTable";
 import { MARKER_STYLES, MAX_RECORDS_PER_REQUEST, VIEW_CONFIG, WARSAW_CENTER } from "./config";
 
 function MapBoundsSetter({ records }) {
@@ -303,68 +305,7 @@ function App() {
                     fillColor={style.fillColor}
                     fillOpacity={0.78}
                   >
-                    <Popup>
-                      {record.type === "FORESTS" ? (
-                        <>
-                          <div className="popup-title">{record.forestArea}</div>
-                          <div className="popup-meta">
-                            <strong>Dzielnica:</strong> {record.district}
-                            <br />
-                            <strong>Osiedle:</strong> {record.settlement}
-                            <br />
-                            <strong>Oddział:</strong> {record.divisionNo}
-                            {record.subDivision !== "-" ? ` / ${record.subDivision}` : ""}
-                            <br />
-                            <hr />
-                            <strong>Gatunek panujący:</strong> {record.dominantSpecies}
-                            <br />
-                            <strong>Wiek:</strong> {record.ageYears} {record.ageYears !== "-" ? "lat" : ""}
-                            <br />
-                            <strong>Typ siedliskowy:</strong> {record.habitatType}
-                            <br />
-                            <small>Plan: {record.planValidity}</small>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="popup-title">
-                            {record.species}
-                            {record.speciesLatin !== "-" && (
-                              <span className="popup-latin"> ({record.speciesLatin})</span>
-                            )}
-                            {record.outlineId !== "-" ? ` (Grupa: ${record.outlineId})` : ""}
-                          </div>
-                          <div className="popup-meta">
-                            <strong>Dzielnica:</strong> {record.district}
-                            <br />
-                            <strong>Adres:</strong> {record.address}{" "}
-                            {record.addressNumber !== "-" ? record.addressNumber : ""}
-                            <br />
-                            {record.location !== "-" && (
-                              <>
-                                <strong>Lokalizacja:</strong> {record.location}
-                                <br />
-                              </>
-                            )}
-                            <hr />
-                            <strong>Wysokość:</strong> {record.height} {record.height !== "-" ? "m" : ""}
-                            <br />
-                            <strong>Obwód pnia:</strong> {record.circumference}{" "}
-                            {record.circumference !== "-" ? "cm" : ""}
-                            <br />
-                            <strong>Średnica korony:</strong> {record.crownDiameter}{" "}
-                            {record.crownDiameter !== "-" ? "m" : ""}
-                            <br />
-                            <strong>Stan:</strong> {record.health}
-                            <br />
-                            <strong>Wiek:</strong> {record.ageDays} {record.ageDays !== "-" ? "dni" : ""}
-                            <br />
-                            <small>Data pomiaru: {record.measurementDate}</small>
-                            <small>Nr inw: {record.inventoryNumber}</small>
-                          </div>
-                        </>
-                      )}
-                    </Popup>
+                    <RecordPopup record={record} />
                   </CircleMarker>
                 );
               })}
@@ -377,116 +318,7 @@ function App() {
             <span>{records.length} rekordów</span>
           </div>
           <div className="table-wrap">
-            {activeView === "FORESTS" ? (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Obwód</th>
-                    <th>Dzielnica / Osiedle</th>
-                    <th>Oddział</th>
-                    <th>Pow. (ha)</th>
-                    <th>STL</th>
-                    <th>Gatunek panujący</th>
-                    <th>Wiek (lata)</th>
-                    <th>Plan</th>
-                    <th>WGS84</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {records.length === 0 ? (
-                    <tr>
-                      <td colSpan="9" className="empty">
-                        Wybierz parametry i pobierz dane.
-                      </td>
-                    </tr>
-                  ) : (
-                    records.map((record, idx) => (
-                      <tr key={idx}>
-                        <td>
-                          <div className="species-cell">{record.forestArea}</div>
-                        </td>
-                        <td>
-                          <div>{record.district}</div>
-                          <small className="address-cell">{record.settlement}</small>
-                        </td>
-                        <td>
-                          {record.divisionNo}
-                          {record.subDivision !== "-" ? `/${record.subDivision}` : ""}
-                        </td>
-                        <td>{record.area}</td>
-                        <td>{record.habitatType}</td>
-                        <td>{record.dominantSpecies}</td>
-                        <td>{record.ageYears}</td>
-                        <td>{record.planValidity}</td>
-                        <td className="coords-cell">
-                          {record.lat !== null && record.lon !== null
-                            ? `${record.lat.toFixed(5)}, ${record.lon.toFixed(5)}`
-                            : "-"}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Gatunek</th>
-                    <th>Lokalizacja / Adres</th>
-                    <th>Wys. (m)</th>
-                    <th>Obwód (cm)</th>
-                    <th>Korona (m)</th>
-                    <th>Stan</th>
-                    <th>Wiek (dni)</th>
-                    <th>Data pomiaru</th>
-                    <th>Nr inw.</th>
-                    <th>WGS84</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {records.length === 0 ? (
-                    <tr>
-                      <td colSpan="10" className="empty">
-                        Wybierz parametry i pobierz dane.
-                      </td>
-                    </tr>
-                  ) : (
-                    records.map((record, idx) => (
-                      <tr key={idx}>
-                        <td>
-                          <div className="species-cell">
-                            {record.species} {record.outlineId !== "-" ? `(G: ${record.outlineId})` : ""}
-                          </div>
-                          <small className="latin-cell">
-                            {record.speciesLatin !== "-" ? record.speciesLatin : ""}
-                          </small>
-                        </td>
-                        <td>
-                          <div>{record.district}</div>
-                          <small className="address-cell">
-                            {record.address} {record.addressNumber !== "-" ? record.addressNumber : ""}
-                          </small>
-                          {record.location !== "-" && <div className="location-cell">({record.location})</div>}
-                        </td>
-                        <td>{record.height}</td>
-                        <td>{record.circumference}</td>
-                        <td>{record.crownDiameter}</td>
-                        <td>{record.health}</td>
-                        <td>{record.ageDays}</td>
-                        <td>{record.measurementDate}</td>
-                        <td>{record.inventoryNumber}</td>
-                        <td className="coords-cell">
-                          {record.lat !== null && record.lon !== null
-                            ? `${record.lat.toFixed(5)}, ${record.lon.toFixed(5)}`
-                            : "-"}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            )}
+            <ResultsTable records={records} view={activeView} />
           </div>
         </section>
       </main>
