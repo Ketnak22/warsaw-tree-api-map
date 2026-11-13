@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import L from "leaflet";
 import { MapContainer, TileLayer, CircleMarker, useMap } from "react-leaflet";
 import { buildApiUrl, fetchPagedRecords, fetchSinglePage } from "./api";
@@ -11,22 +11,13 @@ function MapBoundsSetter({ records }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!records || records.length === 0) {
+    if (records.length === 0) {
       map.setView(WARSAW_CENTER, 11);
       return;
     }
 
-    const points = records
-      .filter((record) => record.lat !== null && record.lon !== null)
-      .map((record) => [record.lat, record.lon]);
-
-    if (points.length > 0) {
-      const bounds = L.latLngBounds(points);
-      map.fitBounds(bounds.pad(0.14), { maxZoom: 16 });
-      return;
-    }
-
-    map.setView(WARSAW_CENTER, 11);
+    const bounds = L.latLngBounds(records.map((record) => [record.lat, record.lon]));
+    map.fitBounds(bounds.pad(0.14), { maxZoom: 16 });
   }, [records, map]);
 
   return null;
@@ -46,6 +37,11 @@ function App() {
   const [endpointUrl, setEndpointUrl] = useState("");
 
   const currentView = VIEW_CONFIG[activeView];
+  // Memoized so the map only refits when new data arrives, not on every keystroke in the form.
+  const recordsWithCoords = useMemo(
+    () => records.filter((record) => record.lat !== null && record.lon !== null),
+    [records]
+  );
   const currentResourceType = activeView === "TREES" ? resourceType : activeView;
   const itemLabel = activeView === "SHRUBS" ? "krzewy" : activeView === "FORESTS" ? "lasy" : "drzewa";
 
@@ -115,30 +111,28 @@ function App() {
   const downloadGeoJson = () => {
     const geojson = {
       type: "FeatureCollection",
-      features: records
-        .filter((record) => record.lat !== null && record.lon !== null)
-        .map((record) => ({
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [record.lon, record.lat] },
-          properties: {
-            gatunek: record.species,
-            gatunek_lacina: record.speciesLatin,
-            dzielnica: record.district,
-            adres: record.address,
-            nr_adres: record.addressNumber,
-            lokalizacja: record.location,
-            wysokosc: record.height,
-            obwod: record.circumference,
-            srednica_korony: record.crownDiameter,
-            stan_zdrowia: record.health,
-            wiek_dni: record.ageDays,
-            data_pomiaru: record.measurementDate,
-            nr_inw: record.inventoryNumber,
-            jednostka: record.entity,
-            id_obrysu: record.outlineId,
-            source: record.raw,
-          },
-        })),
+      features: recordsWithCoords.map((record) => ({
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [record.lon, record.lat] },
+        properties: {
+          gatunek: record.species,
+          gatunek_lacina: record.speciesLatin,
+          dzielnica: record.district,
+          adres: record.address,
+          nr_adres: record.addressNumber,
+          lokalizacja: record.location,
+          wysokosc: record.height,
+          obwod: record.circumference,
+          srednica_korony: record.crownDiameter,
+          stan_zdrowia: record.health,
+          wiek_dni: record.ageDays,
+          data_pomiaru: record.measurementDate,
+          nr_inw: record.inventoryNumber,
+          jednostka: record.entity,
+          id_obrysu: record.outlineId,
+          source: record.raw,
+        },
+      })),
     };
 
     const blob = new Blob([JSON.stringify(geojson, null, 2)], { type: "application/geo+json" });
@@ -289,26 +283,24 @@ function App() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
             />
-            <MapBoundsSetter records={records} />
-            {records
-              .filter((record) => record.lat !== null && record.lon !== null)
-              .map((record, idx) => {
-                const style = MARKER_STYLES[record.type];
+            <MapBoundsSetter records={recordsWithCoords} />
+            {recordsWithCoords.map((record, idx) => {
+              const style = MARKER_STYLES[record.type];
 
-                return (
-                  <CircleMarker
-                    key={idx}
-                    center={[record.lat, record.lon]}
-                    radius={style.radius}
-                    color={style.color}
-                    weight={2}
-                    fillColor={style.fillColor}
-                    fillOpacity={0.78}
-                  >
-                    <RecordPopup record={record} />
-                  </CircleMarker>
-                );
-              })}
+              return (
+                <CircleMarker
+                  key={idx}
+                  center={[record.lat, record.lon]}
+                  radius={style.radius}
+                  color={style.color}
+                  weight={2}
+                  fillColor={style.fillColor}
+                  fillOpacity={0.78}
+                >
+                  <RecordPopup record={record} />
+                </CircleMarker>
+              );
+            })}
           </MapContainer>
         </section>
 
