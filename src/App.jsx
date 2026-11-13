@@ -186,11 +186,11 @@ function App() {
                 </p>
                 <p className="source-link">
                   <a
-                    href="https://pl.doczz.net/doc/1897859/drzewa---api-um-warszawa"
+                    href="http://api.um.warszawa.pl"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    ↗ Zobacz dokumentację źródłową API
+                    ↗ Portal otwartych danych UM Warszawa
                   </a>
                 </p>
               </>
